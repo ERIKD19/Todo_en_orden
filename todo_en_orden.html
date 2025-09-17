@@ -1,0 +1,626 @@
+<!doctype html>
+<html lang="es">
+
+<head>
+  <!-- Metadatos y fuentes -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Todo en orden — Servicio de limpieza por horas</title>
+  <meta name="description"
+    content="Todo en orden: servicio professional de limpieza para casas y oficinas. Reserva por horas.">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Dancing+Script:wght@700&display=swap"
+    rel="stylesheet">
+  <!-- Estilos del menú -->
+  <link rel="stylesheet" href="menu-styles.css">
+  <style>
+    /* Variables de color y espaciado globales */
+    :root {
+      --purple-600: #022dcf;
+      --purple-500: #022dcf;
+      --green-500: #2fd18b;
+      --muted: #6b6b6b;
+      --bg: #f6f7f9;
+      --card: #ffffff;
+      --glass: rgba(255, 255, 255, 0.06);
+      --pills-scale: 1;
+      --page-left: 32px;
+      --page-right: 20px;
+      --base-font: 16px;
+      --whatsapp-light: #25D366;
+      --whatsapp-dark: #128C7E;
+      --contact-primary: #022dcf;
+      --contact-hover: #006699; 
+    } 
+    /* Reset de estilos y tipografía base */
+    * { box-sizing: border-box }
+    html { font-size: var(--base-font); }
+    h1 { font-size: clamp(1.4rem, 1.9vw, 1.9rem); }
+    p, li, a, .label { font-size: clamp(0.9rem, 1vw, 1rem); }
+
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, Arial, sans-serif;
+      background: var(--bg);
+      color: #111;
+      -webkit-font-smoothing: antialiased
+    }
+
+    /* Contenedor principal para centrar y espaciar el contenido */
+    .wrap {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding-left: max(env(safe-area-inset-left), clamp(16px, 4vw, var(--page-left)));
+      padding-right: max(env(safe-area-inset-right), clamp(16px, 4vw, var(--page-right)));
+      padding-top: 0;
+      padding-bottom: 0;
+    }
+
+    /* Barra superior de color (header) */
+    .topbar {
+      background: linear-gradient(90deg, var(--purple-600), var(--purple-500));
+      color: #fff;
+      padding: 14px 0;
+      box-shadow: 0 6px 24px rgba(107, 43, 214, 0.14);
+      position: sticky;
+      top: 0;
+      z-index: 90
+    }
+
+    /* Header: logo a la izquierda, menú al centro, botón reservar a la derecha */
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px
+    }
+
+    /* Logo y nombre de la empresa */
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-left: 0px;
+    }
+    .logo img {
+      height: 46px;
+      display: block;
+      margin-left: 0;
+    }
+    .brand {
+      font-weight: 700;
+      font-size: 1.05rem
+    }
+
+    /* Menú de navegación principal */
+    nav {
+      display: flex;
+      gap: 22px;
+      align-items: center;
+      justify-content: center
+    }
+    nav a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 700;
+      opacity: 0.95
+    }
+
+    /* Botón de reservar */
+    .reserve {
+      background: #fff;
+      color: var(--purple-600);
+      padding: 10px 18px;
+      border-radius: 24px;
+      font-weight: 800;
+      text-decoration: none
+    }
+
+    /* Botón de menú hamburguesa para móvil */
+    .menu-toggle {
+      display: none;
+      background: transparent;
+      border: 0;
+      color: #fff;
+      font-size: 22px
+    }
+
+    /* Adaptaciones para pantallas pequeñas */
+    @media (max-width:900px) {
+      nav { display: none }
+      .menu-toggle { display: block }
+      .reserve { display: none }
+      .logo img { height: 40px }
+    }
+
+    /* Hero principal: dos columnas, izquierda texto, derecha imagen y pills */
+    .hero {
+      display: flex;
+      gap: clamp(12px, 3.5vw, 28px);
+      align-items: stretch;
+      margin: clamp(18px, 3.5vw, 28px) 0;
+      padding: clamp(18px, 3.5vw, 36px);
+      border-radius: 12px;
+      position: relative;
+      overflow: visible;
+      align-items: flex-start;
+      flex-wrap: nowrap;
+    }
+
+    /* Columna izquierda del hero */
+    .hero-left {
+      flex: 1;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.8));
+      padding: 28px;
+      border-radius: 12px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06)
+    }
+    .hero-left .kicker {
+      color: var(--green-500);
+      font-weight: 700;
+      margin-bottom: 6px
+    }
+    .hero-left h1 {
+      margin: 6px 0 12px;
+      font-size: 1.9rem
+    }
+    .hero-left p.lead {
+      color: #444;
+      line-height: 1.5
+    }
+
+    /* Columna derecha del hero: imagen y pills */
+    .hero-right {
+      width: clamp(260px, 32vw, 420px);
+      min-width: 220px;
+      position: relative;
+      display: flex;
+      align-items: flex-end;
+      justify-content: flex-end;
+    }
+    .hero-card {
+      width: 100%;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 18px 50px rgba(0, 0, 0, 0.12);
+      display:block;
+    }
+    .hero-card img {
+      width: 100%;
+      height: clamp(180px, 30vh, 320px);
+      object-fit: cover;
+      display: block;
+      transform-origin: center center;
+      animation: kenBurns 14s ease-in-out infinite alternate;
+    }
+    @keyframes kenBurns {
+      from { transform: scale(1) translateY(0) }
+      to { transform: scale(1.06) translateY(-6px) }
+    }
+
+    /* Pills verticales de características */
+    .pill{
+      position: absolute;
+      /* Alinea la parte superior de las pills con la parte superior del cuadro de texto */
+      top: 0;
+      left: calc(40px * (var(--pill-scale,1) * var(--pills-scale,1)));
+      width: calc(120px * (var(--pill-scale,1) * var(--pills-scale,1)));   /* más anchas */
+      height: calc(320px * (var(--pill-scale,1) * var(--pills-scale,1)));  /* más altas */
+      border-radius: calc(60px * (var(--pill-scale,1) * var(--pills-scale,1)));
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-weight: 700;
+      box-shadow: 0 calc(18px * (var(--pill-scale,1) * var(--pills-scale,1))) calc(40px * (var(--pill-scale,1) * var(--pills-scale,1))) rgba(0, 0, 0, 0.12);
+      background: linear-gradient(180deg, var(--pill-top, var(--purple-500)), var(--pill-bottom, var(--purple-600)));
+      transform-origin: top left;
+    }
+    .pill.green {
+      --pill-top: var(--green-500);
+      --pill-bottom: #13a66a;
+      left: 140px;
+    }
+    .pill.purple {
+      --pill-top: var(--purple-500);
+      --pill-bottom: var(--purple-600);
+      left: 280px;
+    }
+    .pill.small {
+      left: 420px;
+      --pill-top: var(--purple-500);
+      --pill-bottom: #5226c8;
+    }
+    .pill svg {
+      width: 60px;
+      height: 60px;
+      margin-bottom: 18px;
+      opacity: 0.95;
+      display:block;
+    }
+    .pill .label {
+      font-size: 1.25rem;
+      text-align: center;
+      line-height: 1;
+      padding: 10px 14px;
+    }
+
+    /* Grid de servicios */
+    .services {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      margin-top: 48px;
+      max-width: 900px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .service {
+      background: var(--card);
+      padding: 5px;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06)
+    }
+
+    /* Botón flotante de WhatsApp */
+    .whatsapp-fab {
+      position: fixed;
+      right: 20px;
+      bottom: 20px;
+      background: linear-gradient(180deg, var(--whatsapp-light), var(--whatsapp-dark));
+      color: #fff;
+      width: 64px;
+      height: 48px;
+      border-radius: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, .18);
+      z-index: 9999;
+      text-decoration: none;
+      padding: 0 14px;
+      gap: 8px
+    }
+    .whatsapp-fab .badge {
+      position: static;
+      background: #ffd166;
+      color: #3b2a6a;
+      border-radius: 12px;
+      padding: 2px 6px;
+      font-size: 12px
+    }
+
+    /* Footer */
+    footer {
+      margin-top: 48px;
+      padding: 28px 0;
+      color: #666;
+      font-size: 0.95rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Botones generales */
+    .btn {
+      padding: 10px 16px;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: 700
+    }
+    .btn-primary {
+      background: var(--purple-600);
+      color: #fff
+    }
+    .btn-ghost {
+      border: 2px solid var(--contact-primary);
+      color: var(--contact-primary);
+      background: transparent;
+      transition: all 0.3s ease;
+    }
+    .btn-ghost:hover {
+      background: var(--contact-primary);
+      color: white;
+    }
+
+    /* Adaptaciones para tablet y móvil */
+    @media (max-width:1100px) {
+      .hero { gap: 18px; padding: 28px; }
+      .hero-right { width: clamp(240px, 36vw, 380px); }
+    }
+    @media (max-width:900px) {
+      .hero { flex-direction: column }
+      .hero-right { width: 100% }
+      .pill { display:none }
+      .wrap {
+        padding-left: max(env(safe-area-inset-left), 14px);
+        padding-right: max(env(safe-area-inset-right), 14px);
+        padding-top: 0;
+        padding-bottom: 0;
+      }
+      .hero-left h1 { font-size: 1.5rem }
+    }
+    @media (max-width:420px) {
+      .hero { padding: 16px; margin: 14px 0; }
+      .hero-card img { height: 160px; }
+      nav a { font-size: .95rem; }
+      .brand { font-size: .98rem; }
+    }
+ 
+    /* Accesibilidad: enlace para saltar al contenido y estilos de foco visibles */
+    .skip-link {
+      position: absolute;
+      left: -999px;
+      top: auto;
+      width: 1px;
+      height: 1px;
+      overflow: hidden
+    }
+    .skip-link:focus,
+    .skip-link:active {
+      position: fixed;
+      left: 16px;
+      top: 12px;
+      width: auto;
+      height: auto;
+      padding: 8px 12px 8px 12px;
+      background: #fff;
+      color: var(--purple-600);
+      z-index: 9999;
+      border-radius: 6px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12)
+    }
+    a:focus-visible,
+    button:focus-visible {
+      outline: 3px solid #ffd166;
+      outline-offset: 3px
+    }
+
+    /* Personalización: resalta el enlace de la página actual */
+    .menu-nav a[href="todo_en_orden.html"] {
+      font-weight: 800;
+      text-decoration: underline;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Enlace para accesibilidad: saltar al contenido principal -->
+  <a href="#main-content" class="skip-link">Saltar al contenido</a>
+
+  <!-- Barra superior con logo, menú y botón reservar -->
+  <div class="topbar">
+    <div class="wrap">
+      <header role="banner">
+        <div class="logo">
+          <!-- Logo y nombre de la empresa -->
+          <a href="todo_en_orden.html"
+            style="display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit"
+            aria-label="Ir a la página principal">
+            <img src="recursos/Todo en orden.png" alt="Todo en orden - logo" style="height:46px;display:block;margin-left:0;" onerror="this.style.display='none'">
+            <div>
+              <div class="brand">Todo en orden</div>
+              <div style="font-size:0.83rem;opacity:0.9">Limpieza por horas · Casas y oficinas</div>
+            </div>
+          </a>
+        </div>
+        <!-- Menú de navegación principal -->
+        <nav class="menu-nav" aria-label="Menú principal" role="navigation">
+          <a href="nosotros.html">Nosotros</a>
+          <a href="servicios.html">Servicios</a>
+          <a href="precios.html">Precios</a>
+          <a href="tips.html">Tips</a>
+        </nav>
+        <!-- Botón reservar y menú hamburguesa -->
+        <div>
+          <a class="reserve" href="todo_en_orden.html#reservar" role="button" aria-label="Reservar ahora">RESERVAR</a>
+          <button class="menu-toggle" aria-label="Abrir menú">☰</button>
+        </div>
+      </header>
+    </div>
+  </div>
+
+  <!-- Contenido principal de la página -->
+  <main id="main-content" role="main">
+    <!-- Sección hero: presentación principal -->
+    <section class="hero wrap">
+      <div class="hero-left">
+        <div class="kicker">Servicio local • Quito (cambia ciudad)</div>
+        <h1>Todo en orden — limpieza profesional por horas</h1>
+        <p class="lead">Ofrecemos limpieza puntual, confiable y con personal verificado. Reserva por horas y paga de
+          forma segura. Ideal para casas, departamentos y oficinas.</p>
+        <p style="color:#555;line-height:1.5">Somos "Todo en orden", una empresa dedicada a facilitar tu día a día con
+          servicios de limpieza profesionales. Nuestro equipo recibe formación en protocolos de higiene, usa productos
+          de calidad y sigue estrictos controles de seguridad. Trabajamos en Quito y zonas cercanas; ofrecemos horarios
+          flexibles y atención personalizada.</p>
+        <!-- Botón de contacto por WhatsApp -->
+        <div style="display:flex;gap:12px;margin-top:16px">
+          <a class="btn btn-ghost" href="https://wa.me/593991234567?text=Hola%20Todo%20en%20orden,%20quiero%20informaci%C3%B3n" target="_blank" rel="noopener">Contactar</a>
+        </div>
+        <!-- Características rápidas -->
+        <div style="display:flex;gap:10px;margin-top:18px">
+          <div style="padding:10px 14px;background:var(--card);border-radius:10px;box-shadow:0 8px 20px rgba(0,0,0,0.04)">Personal verificado</div>
+          <div style="padding:10px 14px;background:var(--card);border-radius:10px;box-shadow:0 8px 20px rgba(0,0,0,0.04)">Pago seguro</div>
+          <div style="padding:10px 14px;background:var(--card);border-radius:10px;box-shadow:0 8px 20px rgba(0,0,0,0.04)">Garantía 24h</div>
+        </div>
+      </div>
+      <!-- Imagen principal y pills -->
+      <div class="hero-right" style="--pills-scale:1.0">
+        <div class="hero-card">
+          <img src="hero.jpg" alt="Limpieza Todo en orden" onerror="this.style.display='none'">
+        </div>
+        <!-- Pills verticales de características -->
+        <div class="pill green" style="--pill-top:#2fd18b;--pill-bottom:#4DFFBE;--pill-scale:1" aria-hidden>
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M3 13h4v7H3zM10 6h4v14h-4zM17 9h4v11h-4z" fill="rgba(255,255,255,0.9)" />
+          </svg>
+          <div class="label">confiable</div>
+        </div>
+        <div class="pill purple" style="--pill-top:#022dcf;--pill-bottom:#6b2bd6;--pill-scale:1" aria-hidden>
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2l3 6h6l-4.8 3.5L20 20l-8-5-8 5 1.8-8.5L1 8h6l3-6z" fill="rgba(255,255,255,0.95)" />
+          </svg>
+          <div class="label">garantizado</div>
+        </div>
+        <div class="pill small" style="--pill-top:#8a5df7;--pill-bottom:#5b2ad1;--pill-scale:1" aria-hidden>
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 3l9 4v6c0 5-4 9-9 9s-9-4-9-9V7l9-4z" fill="rgba(255,255,255,0.95)" />
+          </svg>
+          <div class="label">super limpio</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Sección Misión y Visión -->
+    <section id="mision-vision" aria-labelledby="misionvision-heading" style="margin-top:28px">
+      <div class="wrap" style="display:flex;gap:20px;align-items:flex-start;flex-wrap:wrap">
+        <h2 id="misionvision-heading" style="width:100%;margin:0 0 8px">Misión y Visión</h2>
+        <article
+          style="flex:1;min-width:260px;background:var(--card);padding:18px;border-radius:10px;box-shadow:0 8px 20px rgba(0,0,0,0.04)"
+          aria-labelledby="mision-title">
+          <h3 id="mision-title">Misión</h3>
+          <p>Ser la empresa líder en servicio de limpieza y mantenimiento, mediante un alto nivel de servicio enfocado a
+            la excelencia, con un equipo competitivo a través entrenamiento, incrementando nuestra capacidad técnica y
+            profesional, haciéndonos más eficientes y mejores profesionales cumpliendo con todos los estándares de
+            calidad en beneficio de la comunidad, cliente y empresa.</p>
+        </article>
+        <article
+          style="flex:1;min-width:260px;background:var(--card);padding:18px;border-radius:10px;box-shadow:0 8px 20px rgba(0,0,0,0.04)"
+          aria-labelledby="vision-title">
+          <h3 id="vision-title">Visión</h3>
+          <p>Ser la mejor alternativa de servisio, una empresa reconocida y posicionada a nivel nacional por su buen
+            desempeño de trabajo, por su excelencia y calidad de servicio y generar a nuestros clientes un alto grado de
+            satisfacción.
+            <br>
+            <br>
+            <br>
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <!-- Sección de servicios -->
+    <section id="servicios" aria-labelledby="servicios-heading" style="margin-top:28px">
+      <div class="wrap" style="display:flex;gap:20px;align-items:flex-start;flex-wrap:wrap">
+        <h2 id="servicios-heading" style="width:100%;margin:0 0 8px">Servicios</h2>
+        <article
+          style="flex:1;min-width:260px;background:var(--card);padding:18px;border-radius:10px;box-shadow:0 8px 20px rgba(0,0,0,0.04)"
+          aria-labelledby="mision-title">
+          <p>Servicio por horas para viviendas, incluye barrido, fregado, baños y cocina. Puedes personalizar tus tareas.
+            <br>
+            <br>
+            <br>
+          </p>
+        </article>
+        <article
+          style="flex:1;min-width:260px;background:var(--card);padding:18px;border-radius:10px;box-shadow:0 8px 20px rgba(0,0,0,0.04)"
+          aria-labelledby="vision-title">
+          <p>Planifica limpieza periódica o por evento. productos profesionales y control de calidad.
+            <br>
+            <br>
+            <br>
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <!-- Sección de cómo funciona el servicio -->
+    <section id="como-funciona" style="margin-top:28px">
+      <h2><pre> Cómo funciona</pre></h2>
+      <ol>
+        <li><pre> Reserva nuestros servicios por WhatsApp.</pre></li>
+        <li><pre> Confirmación y asignación de personal verificado.</pre></li>
+        <li><pre> Servicio puntual y comprobación de calidad.</pre></li>
+      </ol>
+    </section>
+
+    <!-- Sección de contacto -->
+    <section id="contacto" style="margin-top:28px">
+      <h2><pre> Contacto</pre></h2>
+      <p><pre><a href=" mailto:hola@todoenorden.com"> hola@todoenorden.com</a></pre></p>
+      <p><pre> Teléfono / WhatsApp: <a href="tel:+593991234567">+593 99 123 4567</a></pre></p>
+      <p><pre> Dirección: Av. Ejemplo 123, Quito — (cambia por tu dirección)</pre></p>
+    </section>
+  </main>
+
+  <!-- Pie de página -->
+  <footer>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:8px;">
+      <div>&copy; <span id="year"></span> Todo en orden — Todos los derechos reservados</div>
+      <div style="color:var(--muted)">Diseñado por Erik Aguilar</div>
+    </div>
+  </footer>
+
+  <!-- Botón flotante de WhatsApp -->
+  <a class="whatsapp-fab" id="waFab"
+    href="https://wa.me/593991234567?text=Hola%20Todo%20en%20orden,%20quiero%20informaci%C3%B3n" target="_blank"
+    rel="noopener noreferrer" aria-label="Chatear por WhatsApp">
+    <!-- icono SVG de WhatsApp -->
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path
+        d="M20.52 3.48A11.94 11.94 0 0012 0C5.37 0 .09 5.28.09 11.92c0 2.1.55 4.15 1.6 5.95L0 24l6.36-1.65c1.72.94 3.66 1.47 5.64 1.47 6.63 0 11.91-5.28 11.91-11.92 0-3.18-1.24-6.16-3.39-8.34z"
+        fill="#fff" opacity="0.15" />
+      <path
+        d="M17.6 14.47c-.28-.14-1.66-.82-1.92-.91-.26-.09-.45-.14-.64.14-.2.28-.78.91-.96 1.1-.18.2-.36.22-.66.08-.29-.14-1.23-.45-2.34-1.44-.86-.77-1.44-1.7-1.61-1.99-.17-.29-.02-.45.13-.59.13-.13.29-.36.44-.54.15-.18.2-.29.3-.48.1-.2.05-.36-.02-.5-.07-.14-.64-1.54-.88-2.12-.23-.55-.47-.48-.64-.49-.17-.01-.36-.01-.55-.01s-.52.07-.79.36c-.27.29-1.04 1.02-1.04 2.48 0 1.45 1.06 2.85 1.21 3.05.14.2 2.09 3.41 5.07 4.78 2.98 1.36 2.98.91 3.52.85.53-.07 1.66-.66 1.9-1.31.24-.65.24-1.21.17-1.32-.07-.11-.26-.18-.54-.32z"
+        fill="#fff" />
+    </svg>
+    <span class="badge">?</span>
+  </a>
+
+  <!-- Script para interacción del menú, WhatsApp y año automático -->
+  <script>
+    (function(){
+      // Referencias a elementos del menú y botón hamburguesa
+      const nav = document.querySelector('nav');
+      const toggle = document.querySelector('.menu-toggle');
+
+      // Mostrar/ocultar menú en móvil
+      if(toggle && nav){
+        toggle.addEventListener('click', ()=> {
+          nav.style.display = (nav.style.display === 'flex') ? 'none' : 'flex';
+        });
+      }
+
+      // Efecto hover en el botón de WhatsApp
+      const waFab = document.getElementById('waFab');
+      if(waFab){
+        const badge = waFab.querySelector('.badge');
+        if(badge){
+          waFab.addEventListener('mouseenter', ()=>{ badge.textContent='¡Hola!'; badge.style.padding='4px 8px'; });
+          waFab.addEventListener('mouseleave', ()=>{ badge.textContent='?'; badge.style.padding='2px 6px'; });
+        }
+      }
+
+      // Scroll suave para anclas internas
+      document.querySelectorAll('a[href^="#"]').forEach(a=>{
+        a.addEventListener('click', function(e){
+          const href = this.getAttribute('href');
+          if(href && href.length>1){
+            e.preventDefault();
+            const target = document.querySelector(href);
+            if(target) target.scrollIntoView({behavior:'smooth', block:'start'});
+          }
+        });
+      });
+
+      // Cierra el menú móvil al hacer clic fuera
+      document.addEventListener('click', function(e){
+        try{
+          if(window.innerWidth <= 900 && nav && toggle && !nav.contains(e.target) && !toggle.contains(e.target) && nav.style.display === 'flex'){
+            nav.style.display = 'none';
+          }
+        }catch(err){
+          console.warn('Error handler click fuera:', err);
+        }
+      });
+
+      // Actualiza el año automáticamente en el footer
+      const yearEl = document.getElementById('year');
+      if(yearEl) yearEl.textContent = new Date().getFullYear();
+    })();
+  </script>
+</body>
+</html>
